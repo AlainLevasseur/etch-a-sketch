@@ -2,8 +2,10 @@ const MAX_SIZE = 100;
 const MIN_SIZE = 1;
 
 const gridContainer = document.querySelector(".grid-container");
-const button = document.querySelector('#new-grid');
+const resetButton = document.querySelector('#reset-grid');
+const resizeButton = document.querySelector('#resize-grid');
 
+let gridSize = 16;
 let mouseDown = false;
 document.body.onmousedown = () => (mouseDown = true);
 document.body.onmouseup = () => (mouseDown = false);
@@ -42,25 +44,30 @@ function getGrid(width, height) {
     }
 }
 
-function setGridButton() {
-    button.addEventListener('click', newGrid);
+function setGridButtons() {
+    resetButton.addEventListener('click', resetGrid);
+    resizeButton.addEventListener('click', resizeGrid);
 }
 
-function newGrid() {
+function resetGrid() {
     gridContainer.innerHTML = "";
-    let newSize;
+    getGrid(gridSize, gridSize);
+}
+
+function resizeGrid() {
+    gridContainer.innerHTML = "";
     let validInput = false;
     while (!validInput) {
-        newSize = prompt("What size is the new grid?")
-        if (newSize > MAX_SIZE) {
+        gridSize = prompt("What size is the new grid?");
+        if (gridSize > MAX_SIZE) {
             alert(`Grid is too big! Maximum size: ${MAX_SIZE}`);
-        } else if (newSize < MIN_SIZE) {
+        } else if (gridSize < MIN_SIZE) {
             alert(`Grid is too small! Minimum size: ${MIN_SIZE}`);
         } else {
             validInput = true;
         }
     }
-    getGrid(newSize, newSize);
+    getGrid(gridSize, gridSize);
 }
 
 function colorChange(e) {
@@ -70,5 +77,5 @@ function colorChange(e) {
 
 function setup() {
     getGrid(16, 16);
-    setGridButton();
+    setGridButtons();
 }
